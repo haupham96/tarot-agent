@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tarot Agent — Listen to the whisper of the universe</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #050210;
+    color: #f4e6c8;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  :root {
+    --gold: #d4a84a;
+    --gold-light: #f4d17a;
+    --gold-soft: #e8cb7a;
+    --violet: #6b3aa0;
+    --violet-deep: #2a1050;
+    --bg: #050210;
+    --bg-2: #0a0420;
+    --text: #f4e6c8;
+    --text-soft: rgba(230,220,250,0.78);
+    --text-faint: rgba(220,210,240,0.55);
+  }
+
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .display { font-family: 'Cinzel', serif; letter-spacing: 0.08em; }
+
+  /* ─────────── Background atmosphere (page-wide) ─────────── */
+  .stage-bg {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 10%, #1f0a48 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 80% 30%, #3a1058 0%, transparent 55%),
+      radial-gradient(ellipse 70% 50% at 50% 95%, #1a0838 0%, transparent 60%),
+      linear-gradient(180deg, #050210 0%, #08031a 50%, #030108 100%);
+  }
+  .stars {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.6;
+  }
+  .glow-rays {
+    position: fixed; top: 0; left: 0; right: 0; height: 60vh; z-index: -1;
+    background: conic-gradient(from 180deg at 50% 0%, transparent 0deg, rgba(212,168,74,0.05) 6deg, transparent 14deg, transparent 346deg, rgba(212,168,74,0.05) 354deg, transparent 360deg);
+    pointer-events: none;
+  }
+  .fog {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 40% at 30% 60%, rgba(90,40,140,0.14) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 35% at 70% 40%, rgba(140,90,180,0.1) 0%, transparent 70%);
+    animation: fog-drift 36s ease-in-out infinite alternate;
+  }
+  @keyframes fog-drift {
+    0% { transform: translate(0,0) scale(1); }
+    100% { transform: translate(-3%, 1.5%) scale(1.04); }
+  }
+
+  /* ─────────── Layout ─────────── */
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+  /* ─────────── Nav ─────────── */
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    background: rgba(8,4,20,0.55);
+    border-bottom: 0.5px solid rgba(212,168,74,0.18);
+  }
+  .nav-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Cinzel', serif; font-size: 16px; letter-spacing: 0.32em;
+    color: var(--gold-soft); font-weight: 600; text-transform: uppercase;
+    text-decoration: none;
+  }
+  .brand-mark {
+    display: block;
+    flex: 0 0 auto;
+  }
+  .nav-links {
+    display: flex; gap: 28px; align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-soft); text-decoration: none; font-size: 13px;
+    letter-spacing: 0.06em; transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta {
+    padding: 8px 18px;
+    background: linear-gradient(180deg, rgba(70,40,120,0.5), rgba(30,15,55,0.7));
+    border: 0.5px solid rgba(212,168,74,0.55);
+    border-radius: 999px;
+    color: var(--gold-soft); font-size: 12px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 0 0 16px rgba(212,168,74,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  /* ─────────── Hero ─────────── */
+  .hero {
+    padding: 80px 0 100px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px; align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 28px;
+    padding: 8px 16px;
+    background: rgba(20,10,40,0.45);
+    border: 0.5px solid rgba(212,168,74,0.3);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+  }
+  .eyebrow .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold-light); box-shadow: 0 0 8px var(--gold-light);
+  }
+  h1.title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 6.4vw, 84px);
+    font-weight: 500; line-height: 1.05; letter-spacing: -0.01em;
+    color: var(--text); margin: 0 0 24px;
+    text-wrap: balance;
+  }
+  h1.title em {
+    font-style: italic; color: var(--gold-soft);
+    font-weight: 400;
+  }
+  .lede {
+    font-size: 17px; line-height: 1.65;
+    color: var(--text-soft);
+    max-width: 520px; margin: 0 0 40px;
+  }
+  .stores {
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+  }
+  .store-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, rgba(20,10,40,0.7), rgba(8,4,20,0.85));
+    border: 0.5px solid rgba(212,168,74,0.45);
+    border-radius: 14px;
+    color: var(--text); text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow:
+      0 0 0 0.5px rgba(212,168,74,0.15),
+      0 6px 20px rgba(0,0,0,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+    min-width: 180px;
+  }
+  .store-btn:hover {
+    border-color: rgba(244,209,122,0.8);
+    box-shadow:
+      0 0 0 1px rgba(244,209,122,0.6),
+      0 0 28px rgba(212,168,74,0.3),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    transform: translateY(-1px);
+  }
+  .store-btn .glyph { color: var(--gold-light); }
+  .store-btn .label-row { display: flex; flex-direction: column; line-height: 1.1; }
+  .store-btn .small {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .store-btn .big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 500; color: var(--gold-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .meta-row {
+    margin-top: 40px;
+    display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
+    color: var(--text-faint); font-size: 12px; letter-spacing: 0.08em;
+  }
+  .meta-row .stars-glyph {
+    color: var(--gold-light); letter-spacing: 0.12em;
+  }
+  .divider-dot {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: rgba(212,168,74,0.5);
+  }
+
+  /* ─────────── Hero device mockup ─────────── */
+  .device-stage {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 600px;
+  }
+  .phone {
+    position: relative;
+    width: 320px; height: 656px;
+    border-radius: 44px;
+    background: linear-gradient(180deg, #0a0420, #050210);
+    box-shadow:
+      0 0 0 8px #14081e,
+      0 0 0 9px rgba(212,168,74,0.2),
+      0 30px 70px rgba(0,0,0,0.7),
+      0 0 80px rgba(120,60,180,0.3);
+    overflow: hidden;
+    transform: rotate(-2deg) translateY(0);
+    animation: phone-float 8s ease-in-out infinite alternate;
+  }
+  @keyframes phone-float {
+    0% { transform: rotate(-2deg) translateY(0); }
+    100% { transform: rotate(-1deg) translateY(-12px); }
+  }
+  .phone::after {
+    content: '';
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 96px; height: 28px; border-radius: 18px; background: #000;
+    z-index: 5;
+  }
+  .phone-screen {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 100% 60% at 50% 0%, #2a1550 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, #3d1a4a 0%, transparent 55%),
+      linear-gradient(180deg, #080316 0%, #0a0420 50%, #05020f 100%);
+    overflow: hidden;
+    padding: 70px 24px 24px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .phone-screen .phone-stars {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .phone-screen .phone-mark {
+    margin-top: 16px;
+    font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.4em;
+    color: var(--gold-soft);
+    text-align: center;
+  }
+  .phone-screen .phone-prompt {
+    margin-top: 56px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic; line-height: 1.5;
+    text-align: center; color: rgba(240,230,255,0.92);
+    text-shadow: 0 2px 18px rgba(120,80,200,0.5);
+    max-width: 240px;
+  }
+  .phone-cards {
+    margin-top: 36px;
+    display: flex; gap: 8px; justify-content: center;
+  }
+  .phone-card {
+    width: 72px; height: 116px; border-radius: 6px;
+    border: 0.5px solid rgba(212,168,74,0.5);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6), 0 0 14px rgba(212,168,74,0.25);
+    overflow: hidden;
+  }
+
+  /* glow halo behind phone */
+  .phone-halo {
+    position: absolute; width: 540px; height: 540px;
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(140,80,200,0.32) 0%, transparent 60%);
+    filter: blur(40px);
+    z-index: -1;
+    animation: halo-pulse 6s ease-in-out infinite;
+  }
+  @keyframes halo-pulse {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.07); }
+  }
+  /* floating cards behind device */
+  .float-card {
+    position: absolute; pointer-events: none;
+    border-radius: 8px; overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 24px rgba(212,168,74,0.3);
+    border: 0.5px solid rgba(212,168,74,0.5);
+  }
+  .fc-1 {
+    width: 110px; height: 176px;
+    top: 8%; left: -2%;
+    transform: rotate(-14deg);
+    animation: float-1 9s ease-in-out infinite alternate;
+    opacity: 0.65;
+  }
+  .fc-2 {
+    width: 96px; height: 154px;
+    bottom: 6%; right: 0%;
+    transform: rotate(12deg);
+    animation: float-2 11s ease-in-out infinite alternate;
+    opacity: 0.6;
+  }
+  @keyframes float-1 {
+    0% { transform: rotate(-14deg) translateY(0); }
+    100% { transform: rotate(-11deg) translateY(-16px); }
+  }
+  @keyframes float-2 {
+    0% { transform: rotate(12deg) translateY(0); }
+    100% { transform: rotate(15deg) translateY(14px); }
+  }
+
+  /* ─────────── Section heading ─────────── */
+  .section { padding: 100px 0; }
+  .section-eyebrow {
+    font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); text-align: center; margin-bottom: 18px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 4.4vw, 56px); font-weight: 500; line-height: 1.1;
+    text-align: center; color: var(--text);
+    margin: 0 0 24px; text-wrap: balance;
+  }
+  .section-title em { font-style: italic; color: var(--gold-soft); font-weight: 400; }
+  .section-sub {
+    text-align: center; color: var(--text-soft);
+    max-width: 580px; margin: 0 auto 60px;
+    font-size: 16px; line-height: 1.7;
+  }
+  .ornament {
+    display: flex; justify-content: center; align-items: center; gap: 14px;
+    margin-bottom: 18px;
+  }
+  .ornament .line {
+    width: 60px; height: 0.5px;
+    background: linear-gradient(to right, transparent, rgba(212,168,74,0.6));
+  }
+  .ornament .line.r {
+    background: linear-gradient(to left, transparent, rgba(212,168,74,0.6));
+  }
+
+  /* ─────────── Features ─────────── */
+  .features {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  }
+  .feature {
+    padding: 32px 28px;
+    background: linear-gradient(135deg, rgba(25,12,50,0.6), rgba(15,8,30,0.78));
+    border: 0.5px solid rgba(212,168,74,0.22);
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    transition: all .3s ease;
+  }
+  .feature:hover {
+    border-color: rgba(212,168,74,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 0 28px rgba(120,60,180,0.18);
+  }
+  .feature .icon {
+    width: 56px; height: 56px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, rgba(212,168,74,0.25), rgba(60,30,100,0.2));
+    border: 0.5px solid rgba(212,168,74,0.4);
+    margin-bottom: 22px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .feature h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 500; color: var(--gold-soft);
+    margin: 0 0 10px; letter-spacing: 0.01em;
+  }
+  .feature p {
+    font-size: 14px; line-height: 1.7;
+    color: var(--text-soft); margin: 0;
+  }
+
+  /* ─────────── Spread showcase ─────────── */
+  .spreads {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-top: 40px;
+  }
+  .spread-card {
+    padding: 32px 24px 28px;
+    background: linear-gradient(180deg, rgba(30,15,55,0.65), rgba(15,8,30,0.85));
+    border: 0.5px solid rgba(212,168,74,0.3);
+    border-radius: 18px;
+    text-align: center;
+    transition: all .3s;
+    position: relative; overflow: hidden;
+  }
+  .spread-card:hover {
+    border-color: rgba(244,209,122,0.7);
+    box-shadow: 0 0 0 1px rgba(244,209,122,0.4), 0 0 28px rgba(212,168,74,0.2);
+    transform: translateY(-3px);
+  }
+  .spread-cards-row {
+    display: flex; gap: 8px; justify-content: center; align-items: center;
+    height: 132px; margin-bottom: 20px;
+  }
+  .mini-card {
+    width: 60px; height: 96px; border-radius: 6px;
+    border: 0.5px solid rgba(212,168,74,0.55);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 10px rgba(212,168,74,0.25);
+    overflow: hidden;
+  }
+  .spread-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; color: var(--gold-soft); font-weight: 500;
+    margin: 0 0 6px;
+  }
+  .spread-card .sub {
+    font-size: 12px; letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+
+  /* ─────────── Big CTA ─────────── */
+  .cta-block {
+    text-align: center;
+    padding: 80px 32px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(60,28,110,0.4), rgba(15,8,30,0.85));
+    border: 0.5px solid rgba(212,168,74,0.3);
+    position: relative; overflow: hidden;
+  }
+  .cta-block::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(140,80,200,0.18), transparent 70%);
+  }
+  .cta-block .stores { justify-content: center; margin-top: 36px; }
+
+  /* ─────────── Footer ─────────── */
+  footer {
+    padding: 60px 0 40px;
+    border-top: 0.5px solid rgba(212,168,74,0.18);
+    margin-top: 80px;
+  }
+  .footer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-links {
+    display: flex; gap: 24px; flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--text-faint); text-decoration: none;
+    font-size: 12px; letter-spacing: 0.08em;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+  .copy {
+    font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    .hero-grid .lede { margin-left: auto; margin-right: auto; }
+    .hero-grid .stores { justify-content: center; }
+    .hero-grid .meta-row { justify-content: center; }
+    .hero-grid .eyebrow { margin-left: auto; margin-right: auto; }
+    .features { grid-template-columns: 1fr; }
+    .spreads { grid-template-columns: 1fr; }
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage-bg"></div>
+<div class="fog"></div>
+<div class="glow-rays"></div>
+
+<svg class="stars" preserveAspectRatio="none">
+  <!-- random stars -->
+  <g id="star-field"></g>
+</svg>
+
+<!-- ─────────────── Top Nav ─────────────── -->
+<nav class="top">
+  <div class="container nav-row">
+    <a href="#" class="brand">
+      <img class="brand-mark" src="assets/logo.svg" alt="Tarot Agent logo" width="28" height="28"/>
+      Tarot Agent
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#spreads">Spreads</a>
+      <a href="#download">Download</a>
+      <a href="tarot-agent.html" class="nav-cta">Try Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────── Hero ─────────────── -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Now reading the universe · Soft launch</div>
+      <h1 class="title">Listen to the <em>whisper</em><br/>of the universe.</h1>
+      <p class="lede">
+        Tarot Agent is a quiet ritual on your phone — shuffle, breathe, and draw.
+        Twelve hand-drawn cards, three sacred spreads, gentle interpretations in
+        Vietnamese and English. Designed for the moments you need to listen inward.
+      </p>
+
+      <div class="stores" id="download">
+        <a href="#" class="store-btn">
+          <svg class="glyph" width="24" height="28" viewBox="0 0 24 28" fill="currentColor">
+            <path d="M17.05 14.96c-.04-3.18 2.6-4.71 2.72-4.78-1.48-2.17-3.79-2.46-4.61-2.5-1.96-.2-3.83 1.16-4.83 1.16s-2.54-1.13-4.18-1.1C4.04 7.77 2 9.05 1 11.04c-2.18 3.78-.55 9.36 1.55 12.42 1.05 1.5 2.3 3.18 3.93 3.12 1.58-.06 2.18-1.02 4.09-1.02 1.91 0 2.45 1.02 4.13.99 1.71-.03 2.79-1.52 3.83-3.03 1.21-1.74 1.71-3.43 1.74-3.51-.04-.02-3.34-1.28-3.38-5.05M14.4 5.6c.87-1.05 1.46-2.51 1.3-3.96-1.25.05-2.77.83-3.67 1.88-.81.92-1.51 2.4-1.32 3.83 1.39.11 2.82-.71 3.69-1.75"/>
+          </svg>
+          <div class="label-row">
+            <span class="small">Download on the</span>
+            <span class="big">App Store</span>
+          </div>
+        </a>
+        <a href="#" class="store-btn">
+          <svg class="glyph" width="26" height="28" viewBox="0 0 26 28" fill="none">
+            <defs>
+              <linearGradient id="play-1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f4d17a"/><stop offset="100%" stop-color="#d4a84a"/>
+              </linearGradient>
+            </defs>
+            <path d="M2 1.5 L15 14 L2 26.5 Z" fill="url(#play-1)" opacity="0.95"/>
+            <path d="M2 1.5 L15 14 L8 21 Z" fill="#e8cb7a" opacity="0.6"/>
+            <path d="M15 14 L22 10 L24 12.5 L24 15.5 L22 18 Z" fill="#c9a04a"/>
+          </svg>
+          <div class="label-row">
+            <span class="small">Get it on</span>
+            <span class="big">Google Play</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="meta-row">
+        <span class="stars-glyph">★ ★ ★ ★ ★</span>
+        <span>4.9 · 2,348 souls</span>
+        <span class="divider-dot"></span>
+        <span>iOS 15+ · Android 9+</span>
+        <span class="divider-dot"></span>
+        <span>VI · EN</span>
+      </div>
+    </div>
+
+    <!-- Phone mockup -->
+    <div class="device-stage">
+      <div class="phone-halo"></div>
+
+      <!-- floating background cards -->
+      <div class="float-card fc-1" id="fc1"></div>
+      <div class="float-card fc-2" id="fc2"></div>
+
+      <div class="phone">
+        <div class="phone-screen">
+          <svg class="phone-stars" id="phone-stars"></svg>
+          <!-- big logo on phone -->
+          <svg width="60" height="60" viewBox="0 0 40 40" aria-hidden="true" style="position:relative;">
+            <defs>
+              <radialGradient id="logo-glow-phone" cx="50%" cy="50%">
+                <stop offset="0%" stop-color="#f4d17a" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#f4d17a" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="20" cy="20" r="18" fill="url(#logo-glow-phone)"/>
+            <path d="M14 6 A 14 14 0 1 0 14 34 A 11 11 0 1 1 14 6" fill="#e8cb7a"/>
+            <path d="M28 14 L29 18 L33 19 L29 20 L28 24 L27 20 L23 19 L27 18 Z" fill="#f4d17a"/>
+          </svg>
+          <div class="phone-mark">TAROT AGENT</div>
+          <div class="phone-prompt">Focus, breathe deeply,<br/>and reflect on what you seek</div>
+
+          <div class="phone-cards" id="phone-cards"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── Features ─────────────── -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="ornament">
+      <span class="line"></span>
+      <svg width="12" height="12" viewBox="0 0 10 10"><path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="#d4a84a"/></svg>
+      <span class="line r"></span>
+    </div>
+    <div class="section-eyebrow">What awaits</div>
+    <h2 class="section-title">A ritual built for <em>quiet moments</em></h2>
+    <p class="section-sub">
+      Not another fortune-teller — a small altar in your pocket. Every detail is
+      designed to slow your breath, not steal your attention.
+    </p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="9" stroke="#f4d17a" stroke-width="1.2"/>
+            <path d="M9 13 L12 16 L18 9" stroke="#f4d17a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Hand-drawn arcana</h3>
+        <p>Twelve Major Arcana cards rendered as living sigils — each glowing with its own hue, ornate borders, and Roman numeral. No clipart, no AI slop.</p>
+      </div>
+
+      <div class="feature">
+        <div class="icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M13 4 A 9 9 0 1 0 13 22 A 7 7 0 1 1 13 4" fill="#f4d17a"/>
+            <circle cx="20" cy="8" r="1.5" fill="#f4d17a"/>
+          </svg>
+        </div>
+        <h3>Bilingual interpretations</h3>
+        <p>Crafted readings in Tiếng Việt and English, with poetic depth and grounded advice. Switch language at any time — your reading travels with you.</p>
+      </div>
+
+      <div class="feature">
+        <div class="icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="3" fill="#f4d17a"/>
+            <circle cx="13" cy="13" r="8" stroke="#f4d17a" stroke-width="1" stroke-opacity="0.6"/>
+            <circle cx="13" cy="13" r="12" stroke="#f4d17a" stroke-width="0.8" stroke-opacity="0.3"/>
+          </svg>
+        </div>
+        <h3>Sacred geometry shuffle</h3>
+        <p>Cards float and breathe before they land. Atmospheric particles, soft fog, and a starfield that responds to time of day. The ritual matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── Spreads ─────────────── -->
+<section class="section" id="spreads">
+  <div class="container">
+    <div class="ornament">
+      <span class="line"></span>
+      <svg width="12" height="12" viewBox="0 0 10 10"><path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="#d4a84a"/></svg>
+      <span class="line r"></span>
+    </div>
+    <div class="section-eyebrow">Three sacred spreads</div>
+    <h2 class="section-title">Choose the <em>shape</em> of your question</h2>
+
+    <div class="spreads">
+      <div class="spread-card">
+        <div class="spread-cards-row" id="sp-1"></div>
+        <h3>One Card</h3>
+        <div class="sub">A single clear message</div>
+      </div>
+      <div class="spread-card">
+        <div class="spread-cards-row" id="sp-3"></div>
+        <h3>Three Cards</h3>
+        <div class="sub">Past · Present · Guidance</div>
+      </div>
+      <div class="spread-card">
+        <div class="spread-cards-row" id="sp-4"></div>
+        <h3>Four Cards</h3>
+        <div class="sub">Self · World · Lesson · Action</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── CTA ─────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="cta-block">
+      <div class="ornament">
+        <span class="line"></span>
+        <svg width="12" height="12" viewBox="0 0 10 10"><path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="#d4a84a"/></svg>
+        <span class="line r"></span>
+      </div>
+      <h2 class="section-title">Begin your reading <em>tonight</em></h2>
+      <p class="section-sub">Free to download. No ads. No tracking. Just you, the cards, and a quiet voice from the dark.</p>
+      <div class="stores">
+        <a href="#" class="store-btn">
+          <svg class="glyph" width="24" height="28" viewBox="0 0 24 28" fill="currentColor">
+            <path d="M17.05 14.96c-.04-3.18 2.6-4.71 2.72-4.78-1.48-2.17-3.79-2.46-4.61-2.5-1.96-.2-3.83 1.16-4.83 1.16s-2.54-1.13-4.18-1.1C4.04 7.77 2 9.05 1 11.04c-2.18 3.78-.55 9.36 1.55 12.42 1.05 1.5 2.3 3.18 3.93 3.12 1.58-.06 2.18-1.02 4.09-1.02 1.91 0 2.45 1.02 4.13.99 1.71-.03 2.79-1.52 3.83-3.03 1.21-1.74 1.71-3.43 1.74-3.51-.04-.02-3.34-1.28-3.38-5.05M14.4 5.6c.87-1.05 1.46-2.51 1.3-3.96-1.25.05-2.77.83-3.67 1.88-.81.92-1.51 2.4-1.32 3.83 1.39.11 2.82-.71 3.69-1.75"/>
+          </svg>
+          <div class="label-row">
+            <span class="small">Download on the</span>
+            <span class="big">App Store</span>
+          </div>
+        </a>
+        <a href="#" class="store-btn">
+          <svg class="glyph" width="26" height="28" viewBox="0 0 26 28" fill="none">
+            <defs>
+              <linearGradient id="play-2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f4d17a"/><stop offset="100%" stop-color="#d4a84a"/>
+              </linearGradient>
+            </defs>
+            <path d="M2 1.5 L15 14 L2 26.5 Z" fill="url(#play-2)" opacity="0.95"/>
+            <path d="M2 1.5 L15 14 L8 21 Z" fill="#e8cb7a" opacity="0.6"/>
+            <path d="M15 14 L22 10 L24 12.5 L24 15.5 L22 18 Z" fill="#c9a04a"/>
+          </svg>
+          <div class="label-row">
+            <span class="small">Get it on</span>
+            <span class="big">Google Play</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── Footer ─────────────── -->
+<footer>
+  <div class="container footer-row">
+    <a href="#" class="brand">
+      <img class="brand-mark" src="assets/logo.svg" alt="Tarot Agent logo" width="22" height="22"/>
+      Tarot Agent
+    </a>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="mailto:hello@tarotagent.app">Contact</a>
+      <a href="tarot-agent.html">Try Demo</a>
+    </div>
+    <div class="copy">© 2026 Tarot Agent · Made with quiet hands</div>
+  </div>
+</footer>
+
+<!-- Card SVG generators -->
+<svg style="display:none">
+  <symbol id="card-back" viewBox="0 0 200 320">
+    <defs>
+      <linearGradient id="cb-bg-tpl" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0a0616"/>
+        <stop offset="50%" stop-color="#1a0c2e"/>
+        <stop offset="100%" stop-color="#050312"/>
+      </linearGradient>
+      <radialGradient id="cb-glow-tpl" cx="50%" cy="50%" r="55%">
+        <stop offset="0%" stop-color="#d4a84a" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="200" height="320" rx="12" fill="url(#cb-bg-tpl)"/>
+    <rect width="200" height="320" rx="12" fill="url(#cb-glow-tpl)"/>
+    <rect x="6" y="6" width="188" height="308" rx="8" fill="none" stroke="#c9a04a" stroke-opacity="0.5" stroke-width="0.8"/>
+    <g transform="translate(100 160)" stroke="#d4a84a" stroke-width="0.8" fill="none" opacity="0.85">
+      <circle r="62" stroke-opacity="0.3"/>
+      <circle r="54" stroke-opacity="0.5"/>
+      <circle r="22" stroke-opacity="0.7"/>
+      <g>
+        <circle r="22" cx="22" stroke-opacity="0.55"/>
+        <circle r="22" cx="-22" stroke-opacity="0.55"/>
+        <circle r="22" cx="11" cy="19" stroke-opacity="0.55"/>
+        <circle r="22" cx="-11" cy="19" stroke-opacity="0.55"/>
+        <circle r="22" cx="11" cy="-19" stroke-opacity="0.55"/>
+        <circle r="22" cx="-11" cy="-19" stroke-opacity="0.55"/>
+      </g>
+      <circle r="7" fill="#d4a84a" fill-opacity="0.18" stroke-opacity="0.9"/>
+      <circle r="2.5" fill="#f4d17a" stroke="none"/>
+    </g>
+  </symbol>
+</svg>
+
+<script>
+  // ─── stars background ───
+  function fillStars(selector, count) {
+    const root = document.querySelector(selector);
+    if (!root) return;
+    const ns = 'http://www.w3.org/2000/svg';
+    let frag = '';
+    for (let i = 0; i < count; i++) {
+      const x = (Math.random() * 100).toFixed(2);
+      const y = (Math.random() * 100).toFixed(2);
+      const r = Math.random() < 0.18 ? 1.1 : 0.5;
+      const op = (0.25 + Math.random() * 0.6).toFixed(2);
+      frag += `<circle cx="${x}%" cy="${y}%" r="${r}" fill="#fff" opacity="${op}"/>`;
+    }
+    root.innerHTML = frag;
+  }
+  fillStars('.stars', 140);
+  fillStars('#phone-stars', 35);
+
+  // ─── card-back render in many places ───
+  const cardBackSVG = `<svg viewBox="0 0 200 320" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><use href="#card-back"/></svg>`;
+  ['fc1','fc2'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = cardBackSVG; });
+
+  // phone cards (3 cards)
+  const phoneCards = document.getElementById('phone-cards');
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('div');
+    d.className = 'phone-card';
+    d.innerHTML = cardBackSVG;
+    phoneCards.appendChild(d);
+  }
+
+  // spread rows
+  function fillSpreadRow(id, count) {
+    const root = document.getElementById(id);
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('div');
+      d.className = 'mini-card';
+      const offset = count === 1 ? 0 : (i - (count-1)/2) * 0;
+      d.style.transform = `translateY(${(i - (count-1)/2) * 0}px) rotate(${(i - (count-1)/2) * 4}deg)`;
+      d.innerHTML = cardBackSVG;
+      root.appendChild(d);
+    }
+  }
+  fillSpreadRow('sp-1', 1);
+  fillSpreadRow('sp-3', 3);
+  fillSpreadRow('sp-4', 4);
+</script>
+</body>
+</html>

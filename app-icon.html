@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Tarot Agent — App Icon Specs</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml"/>
+<style>
+  body {
+    margin: 0; padding: 48px 32px; background: #0a0418;
+    font-family: -apple-system, system-ui, sans-serif; color: #f4e6c8;
+  }
+  h1 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 38px; margin: 0 0 8px; }
+  h2 { font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: #d4a84a; margin: 48px 0 18px; }
+  p { color: rgba(230,220,250,0.7); font-size: 14px; line-height: 1.6; max-width: 720px; }
+  .row { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 28px; }
+  .icon-card { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .icon-card .label { font-size: 11px; color: rgba(220,210,240,0.5); letter-spacing: 0.08em; }
+  .ios-mask { border-radius: 22.37%; overflow: hidden; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .download-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .dl {
+    padding: 10px 18px; background: rgba(30,15,55,0.7);
+    border: 0.5px solid rgba(212,168,74,0.5); border-radius: 999px;
+    color: #f4d17a; cursor: pointer; font-size: 12px; letter-spacing: 0.08em;
+  }
+  .dl:hover { border-color: #f4d17a; }
+  .home-screen {
+    width: 280px; padding: 18px 14px;
+    background:
+      linear-gradient(180deg, #2a1d4d 0%, #1a0e30 100%);
+    border-radius: 28px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .hs-app { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .hs-app .name { font-size: 9px; color: #fff; opacity: 0.85; }
+  .hs-icon { width: 50px; height: 50px; border-radius: 11.18px; overflow: hidden; }
+  .hs-placeholder { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+  .hs-placeholder.b { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .hs-placeholder.c { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .hs-placeholder.d { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .hs-placeholder.e { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+  .hs-placeholder.f { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+  .hs-placeholder.g { background: linear-gradient(135deg, #5ee7df, #b490ca); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Tarot Agent — Icon System</h1>
+<p>Reworked for store listings. The original navigation logo (off-center crescent + small star) doesn't survive at small sizes. Below is a centered, high-contrast variant designed to read at 29×29 and to fill the icon canvas without transparency.</p>
+
+<h2>Master icon · 1024×1024 (App Store)</h2>
+<div class="row">
+  <div class="icon-card">
+    <svg id="icon-master" width="240" height="240" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- background: deep mystical gradient, full-bleed, no transparency -->
+        <radialGradient id="bg" cx="50%" cy="38%" r="80%">
+          <stop offset="0%" stop-color="#3a1862"/>
+          <stop offset="55%" stop-color="#170833"/>
+          <stop offset="100%" stop-color="#08021a"/>
+        </radialGradient>
+        <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f4d17a" stop-opacity="0.45"/>
+          <stop offset="60%" stop-color="#9a4ee0" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="moon-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fdedb8"/>
+          <stop offset="55%" stop-color="#f4d17a"/>
+          <stop offset="100%" stop-color="#c9a04a"/>
+        </linearGradient>
+        <linearGradient id="star-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fff5c2"/>
+          <stop offset="100%" stop-color="#f4d17a"/>
+        </linearGradient>
+        <radialGradient id="moon-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fff5c2" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#f4d17a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- full-bleed background -->
+      <rect width="1024" height="1024" fill="url(#bg)"/>
+
+      <!-- starfield (subtle) -->
+      <g fill="#fff" opacity="0.7">
+        <circle cx="120" cy="160" r="2"/>
+        <circle cx="220" cy="280" r="1.4"/>
+        <circle cx="880" cy="180" r="2.2"/>
+        <circle cx="780" cy="320" r="1.6"/>
+        <circle cx="160" cy="780" r="1.8"/>
+        <circle cx="900" cy="820" r="2.4"/>
+        <circle cx="300" cy="900" r="1.4"/>
+        <circle cx="700" cy="880" r="1.6"/>
+        <circle cx="500" cy="120" r="1.6" opacity="0.5"/>
+        <circle cx="100" cy="500" r="1.4" opacity="0.5"/>
+        <circle cx="950" cy="500" r="1.8" opacity="0.5"/>
+      </g>
+
+      <!-- ornate ring -->
+      <circle cx="512" cy="512" r="380" fill="none" stroke="#d4a84a" stroke-opacity="0.25" stroke-width="2"/>
+      <circle cx="512" cy="512" r="365" fill="none" stroke="#d4a84a" stroke-opacity="0.4" stroke-width="1.5"/>
+
+      <!-- halo behind glyph -->
+      <circle cx="512" cy="512" r="340" fill="url(#halo)"/>
+
+      <!-- moon glow -->
+      <circle cx="450" cy="512" r="240" fill="url(#moon-glow)"/>
+
+      <!-- crescent moon (centered, larger, bold) -->
+      <!-- big circle minus offset circle = crescent. Centered around 512,512 -->
+      <path d="M 612 332
+               A 200 200 0 1 0 612 692
+               A 145 145 0 1 1 612 332 Z"
+            fill="url(#moon-grad)"
+            stroke="#fff5c2" stroke-width="3" stroke-opacity="0.6"/>
+
+      <!-- 8-point star — top right of moon -->
+      <g transform="translate(700 380)">
+        <!-- star glow -->
+        <circle r="80" fill="url(#moon-glow)" opacity="0.7"/>
+        <!-- 8-point star -->
+        <path d="M 0 -56 L 11 -11 L 56 0 L 11 11 L 0 56 L -11 11 L -56 0 L -11 -11 Z"
+              fill="url(#star-grad)"
+              stroke="#fff5c2" stroke-width="2" stroke-opacity="0.8"/>
+        <circle r="8" fill="#fff5c2"/>
+      </g>
+
+      <!-- little accent star bottom-left -->
+      <g transform="translate(360 720)" opacity="0.85">
+        <path d="M 0 -22 L 4 -4 L 22 0 L 4 4 L 0 22 L -4 4 L -22 0 L -4 -4 Z"
+              fill="#f4d17a"/>
+      </g>
+
+      <!-- corner sigil dots -->
+      <g fill="#d4a84a" opacity="0.5">
+        <circle cx="160" cy="160" r="4"/>
+        <circle cx="864" cy="160" r="4"/>
+        <circle cx="160" cy="864" r="4"/>
+        <circle cx="864" cy="864" r="4"/>
+      </g>
+    </svg>
+    <div class="label">1024×1024 — store master</div>
+  </div>
+
+  <div class="icon-card">
+    <div class="ios-mask">
+      <svg width="180" height="180" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg>
+    </div>
+    <div class="label">iOS rendered (auto-rounded)</div>
+  </div>
+</div>
+
+<h2>Size ladder · readability check</h2>
+<div class="row">
+  <div class="icon-card"><div class="ios-mask"><svg width="180" height="180" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div><div class="label">180px · iPhone home</div></div>
+  <div class="icon-card"><div class="ios-mask"><svg width="120" height="120" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div><div class="label">120px · spotlight</div></div>
+  <div class="icon-card"><div class="ios-mask"><svg width="87" height="87" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div><div class="label">87px · settings</div></div>
+  <div class="icon-card"><div class="ios-mask"><svg width="58" height="58" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div><div class="label">58px · spotlight (2x)</div></div>
+  <div class="icon-card"><div class="ios-mask"><svg width="40" height="40" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div><div class="label">40px · notif</div></div>
+  <div class="icon-card"><div class="ios-mask"><svg width="29" height="29" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div><div class="label">29px · settings</div></div>
+</div>
+
+<h2>On a real home screen</h2>
+<div class="row">
+  <div class="home-screen">
+    <div class="hs-app"><div class="hs-icon hs-placeholder"></div><div class="name">Photos</div></div>
+    <div class="hs-app"><div class="hs-icon hs-placeholder b"></div><div class="name">Maps</div></div>
+    <div class="hs-app"><div class="hs-icon hs-placeholder c"></div><div class="name">Notes</div></div>
+    <div class="hs-app"><div class="hs-icon hs-placeholder d"></div><div class="name">Music</div></div>
+    <div class="hs-app">
+      <div class="hs-icon"><svg width="50" height="50" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg></div>
+      <div class="name">Tarot Agent</div>
+    </div>
+    <div class="hs-app"><div class="hs-icon hs-placeholder e"></div><div class="name">Mail</div></div>
+    <div class="hs-app"><div class="hs-icon hs-placeholder f"></div><div class="name">Calc</div></div>
+    <div class="hs-app"><div class="hs-icon hs-placeholder g"></div><div class="name">Wallet</div></div>
+  </div>
+</div>
+
+<h2>Play Store · adaptive icon (foreground + background)</h2>
+<p>Android adaptive icons separate foreground from background so launchers can mask them into circles, squares, squircles, etc. Foreground must keep the safe zone (inner 72/108).</p>
+<div class="row">
+  <!-- circle mask -->
+  <div class="icon-card">
+    <div style="border-radius:50%;overflow:hidden;width:160px;height:160px;">
+      <svg width="160" height="160" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg>
+    </div>
+    <div class="label">Circle mask (Pixel)</div>
+  </div>
+  <!-- squircle -->
+  <div class="icon-card">
+    <div style="border-radius:36%;overflow:hidden;width:160px;height:160px;">
+      <svg width="160" height="160" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg>
+    </div>
+    <div class="label">Squircle (OneUI)</div>
+  </div>
+  <!-- rounded square -->
+  <div class="icon-card">
+    <div style="border-radius:18%;overflow:hidden;width:160px;height:160px;">
+      <svg width="160" height="160" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg>
+    </div>
+    <div class="label">Rounded square</div>
+  </div>
+  <!-- teardrop -->
+  <div class="icon-card">
+    <div style="border-radius:50% 50% 50% 12%;overflow:hidden;width:160px;height:160px;">
+      <svg width="160" height="160" viewBox="0 0 1024 1024"><use href="#icon-master"/></svg>
+    </div>
+    <div class="label">Teardrop</div>
+  </div>
+</div>
+
+<h2>Export</h2>
+<p>Click below to download the master icon as 1024×1024 PNG (no transparency). Drop this into Xcode → Assets → AppIcon, or use it as the source for a Flutter <code>flutter_launcher_icons</code> config.</p>
+<div class="download-row">
+  <button class="dl" onclick="exportPNG(1024)">Download 1024×1024 PNG</button>
+  <button class="dl" onclick="exportPNG(512)">Download 512×512 PNG</button>
+  <button class="dl" onclick="exportPNG(180)">Download 180×180 PNG</button>
+  <button class="dl" onclick="downloadSVG()">Download SVG</button>
+</div>
+
+<h2>What changed from the nav logo</h2>
+<p>· Crescent moved to center and enlarged ~3× — fills the icon canvas<br/>
+· Star moved to upper right (composes against crescent's curve) and given a glow<br/>
+· Added small accent star bottom-left for visual rhythm<br/>
+· Solid violet-to-black gradient background — no transparency, full bleed<br/>
+· Increased moon contrast with subtle vertical gradient and stroke<br/>
+· Added ornate gold rings and corner sigils for "tarot" identity at larger sizes<br/>
+· Gold (#f4d17a) on deep violet (#170833) — passes WCAG large-element contrast comfortably</p>
+
+</div>
+
+<script>
+function exportPNG(size) {
+  const svg = document.getElementById('icon-master');
+  const xml = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([xml], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = size; canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, size, size);
+    canvas.toBlob(b => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b);
+      a.download = `tarot-agent-icon-${size}.png`;
+      a.click();
+    }, 'image/png');
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+}
+function downloadSVG() {
+  const svg = document.getElementById('icon-master');
+  const xml = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([xml], { type: 'image/svg+xml' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tarot-agent-icon.svg';
+  a.click();
+}
+</script>
+</body>
+</html>
